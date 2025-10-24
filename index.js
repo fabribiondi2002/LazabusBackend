@@ -1,17 +1,24 @@
 import express from 'express';
+import dotenv from 'dotenv';
+import sequelize from './config/db.js';
+import { Parada, Ruta, RutaParada, Viaje } from './models/associations.js';
+
+dotenv.config();
 
 const app = express();
-const PORT = 3000;
-
-// Middleware para parsear JSON (si vas a recibir datos en el body)
 app.use(express.json());
 
-// Ruta principal
-app.get('/', (req, res) => {
-  res.send('¡Hola, Express está funcionando! 🚀');
-});
+// Ruta de prueba
+app.get('/', (req, res) => res.send('🚍 API Lazabus funcionando correctamente'));
 
-// Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+
+// Conexión y sincronización
+try {
+  await sequelize.authenticate();
+  await sequelize.sync({ alter: true });
+ 
+  app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+} catch (error) {
+  console.error('Error al conectar con la base de datos:', error);
+}
