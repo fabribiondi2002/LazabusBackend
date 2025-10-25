@@ -7,6 +7,7 @@ RutaParada.init({
   id_ruta: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    primaryKey: true,
     references: { model: 'rutas', key: 'id_ruta' },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE'
@@ -14,6 +15,7 @@ RutaParada.init({
   id_parada: {
     type: DataTypes.BIGINT,
     allowNull: false,
+    primaryKey: true,
     references: { model: 'paradas', key: 'id_parada' },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE'
@@ -25,5 +27,6 @@ RutaParada.init({
   tableName: 'ruta_paradas',
   timestamps: false
 });
+
 
 export default RutaParada;

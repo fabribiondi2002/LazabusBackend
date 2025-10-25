@@ -21,6 +21,10 @@ Viaje.init({
     allowNull: false,
     defaultValue: 'en_curso'
   },
+  origen: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
   destino: {
     type: DataTypes.STRING,
     allowNull: false
