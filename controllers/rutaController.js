@@ -43,3 +43,13 @@ export const eliminarRutaParadas = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+export const calcularRutas = async (req, res) => {
+    const { olat, olng, dlat, dlng } = req.query;
+
+    try {
+        const rutasCalculadas = await rutaService.calcularRutasService({ olat, olng, dlat, dlng });
+        res.json(rutasCalculadas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

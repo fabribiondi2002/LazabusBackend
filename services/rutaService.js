@@ -1,6 +1,9 @@
 import Ruta from "../models/Ruta.js";
 import Parada from "../models/Parada.js";
 import RutaParada from '../models/RutaParada.js';
+import { distanciaHaversine } from "../utils/calculos.js";
+
+const RADIO_KM = 0.5;
 import { Sequelize } from "sequelize";
 
 const obtenerRutasService = async () => {
@@ -91,11 +94,35 @@ const eliminarRutaParadasService = async (idRuta) => {
   }
 };
 
+const calcularRutasService = async ({ olat, olng, dlat, dlng }) => {
+
+  const oLatNum = parseFloat(olat);
+  const oLngNum = parseFloat(olng);
+  const dLatNum = parseFloat(dlat);
+  const dLngNum = parseFloat(dlng);
+  const rutas = await Ruta.findAll({
+    include: [{
+      model: Parada,
+      as: 'paradas',
+      through: { attributes: ['orden'] }
+    }]
+  });
+  const rutasFiltradas = rutas.filter(ruta => {
+    const paradaOrigen = ruta.paradas.find(p => distanciaHaversine(p.lat, p.lon, oLatNum, oLngNum) <= RADIO_KM);
+    const paradaDestino = ruta.paradas.find(p => distanciaHaversine(p.lat, p.lon, dLatNum, dLngNum) <= RADIO_KM);
+   if (paradaOrigen && paradaDestino && (paradaOrigen.RutaParada.orden <= paradaDestino.RutaParada.orden)) {
+      return true;
+    }
+  });
+  return rutasFiltradas;
+};
+
 export default {
   obtenerRutasService,
   agregarRutaService,
   asignarParadasARutaService,
   eliminarRutaService,
-  eliminarRutaParadasService
+  eliminarRutaParadasService,
+  calcularRutasService
 };
 
