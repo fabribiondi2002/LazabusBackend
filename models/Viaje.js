@@ -17,9 +17,9 @@ Viaje.init({
     onDelete: 'CASCADE'
   },
   estado: {
-    type: DataTypes.ENUM('en_curso', 'finalizado', 'cancelado'),
+    type: DataTypes.ENUM('creado','en_curso', 'finalizado', 'cancelado'),
     allowNull: false,
-    defaultValue: 'en_curso'
+    defaultValue: 'creado'
   },
   origen: {
     type: DataTypes.STRING,
