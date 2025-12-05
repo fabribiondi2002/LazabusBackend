@@ -3,7 +3,7 @@ import Parada from "../models/Parada.js";
 import RutaParada from '../models/RutaParada.js';
 import { distanciaHaversine } from "../utils/calculos.js";
 
-const RADIO_KM = 5;
+const RADIO_KM = 1;
 import { Sequelize } from "sequelize";
 
 const obtenerRutasService = async () => {
@@ -155,8 +155,9 @@ const calcularRutaOptimaService = async ({ olat, olng, dlat, dlng }) => {
           ruta,
           paradaOrigen: paradaOrigen.parada,
           paradaDestino: paradaDestino.parada,
-          distanciaOrigen: paradaOrigen.dist,
-          distanciaDestino: paradaDestino.dist
+          distanciaOrigen: (paradaOrigen.dist).toFixed(2),
+          distanciaDestino: (paradaDestino.dist).toFixed(2)
+
         };
       }
     }
